@@ -1,4 +1,4 @@
-### CAT Protocol Token Mintleme Adımları
+### CAT Protocol Token Mintleme işlemi
 
 #### Gereksinimler:
 - [Git](https://git-scm.com/downloads)
@@ -9,7 +9,7 @@
 
 ---
 
-#### Başlamadan Önce Yapılması Gerekenler:
+#### Başlamadan Önce Kurulması Gerekenler:
 
 1. **Sistem güncellemesi ve npm kurulumu:**
    ```bash
@@ -50,41 +50,41 @@
 
 ---
 
-#### Adımlar:
+#### Diğer Adımlar:
 
-1. **Yarn'ı global olarak yükleyin:**
+1. **Yarn'ı global olarak yükleme:**
    ```bash
    npm install -g yarn
    ```
 
-2. **CAT Token Box deposunu klonlayın:**
+2. **CAT Token Box deposunu klonlama:**
    ```bash
    git clone https://github.com/CATProtocol/cat-token-box.git
    ```
 
-3. **cat-token-box dizinine gidin:**
+3. **cat-token-box dizinine geçiş yapınız:**
    ```bash
    cd cat-token-box
    ```
 
-4. **Gerekli bağımlılıkları yükleyin ve projeyi derleyin:**
+4. **Gerekli bağımlılıkların yüklenmesi Proje Derlemesi:**
    ```bash
    yarn install
    yarn build
    ```
 
-5. **Tracker dizinine gidin:**
+5. **Tracker dizinine geçiş yapın:**
    ```bash
    cd packages/tracker
    ```
 
-6. **Tracker için bağımlılıkları yükleyin ve derleyin:**
+6. **Tracker için bağımlılıkların yüklenmesi ve derlenmesi:**
    ```bash
    yarn install
    yarn build
    ```
 
-7. **Docker container'ı çalıştırın:**
+7. **Docker container'ı çalıştırınız:**
    ```bash
    sudo chmod 777 docker/data
    sudo chmod 777 docker/pgdata
@@ -96,7 +96,7 @@
    cd ../../ && docker build -t tracker:latest .
    ```
 
-9. **Tracker container'ını başlatın:**
+9. **Tracker container'ını başlatınız:**
    ```bash
    docker run -d \
    --name tracker \
@@ -107,18 +107,22 @@
    tracker:latest
    ```
 
-10. **Tracker'ın fractal node ile senkronize olmasını bekleyin:**
-    - Senkronizasyonu şu adresten takip edebilirsiniz: [http://127.0.0.1:3000/api](http://127.0.0.1:3000/api)
+10. **Tracker'ın fractal node ile senkronize olmasını bekleyiniz:**
+    - Senkronizasyonu takibini buradan yapabilirsiniz. >>> [http://127.0.0.1:3000/api](http://127.0.0.1:3000/api)
 11. **Senkronizasyon Durumunu kontrol etmek için:**
    ```bash
    curl http://127.0.0.1:3000/api
-   ```   
+```
+**Senkronizasyon Komutunu çalıştırdığınızda durum bu şekilde olmalı:**
+```
+{"code":0,"msg":"OK","data":{"trackerBlockHeight":11506,"nodeBlockHeight":11507,"latestBlockHeight":11507}}
+```   
 
 ---
 
-#### CLI Kullanarak Cüzdan ve Mintleme Adımları:
+#### CLI Kullanarak Cüzdan ve Mintleme İşlemleri:
 
-1. **CLI dizinine gidin:**
+1. **CLI dizinine gidiniz:**
    ```bash
    cd packages/cli
    ```
@@ -129,37 +133,27 @@
    yarn build
    ```
 
-3. **Yeni bir cüzdan oluşturun ve adresinizi alın:**
+3. **Yeni bir cüzdan oluşturun ve adresinizi alınız:**
    ```bash
    yarn cli wallet create
    yarn cli wallet address
    ```
-   *Not: Bu adımda seed'i ve cüzdan adresinizi kaydetmeyi unutmayın. Cüzdanınıza FB gönderin.*
+   *Not: Bu adımda mnemonic'i ve cüzdan adresinizi kaydetmeyi unutmayın. Cüzdanınıza FB gönderin.*
 
 4. **CAT mintleyin:**
-   *fee-rate değerini 600 olarak kullanıyorum. Çok düşük fee ile gönderirseniz mintlemeyebilir. 
    ```bash
    yarn cli mint -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0 5 --fee-rate 3000
    ```
 
    *Bu komutu her çalıştırdığınızda, seferde 5 adet CAT mintlenir.*
 
-   ```bash
-    command="yarn cli mint -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0 5 --fee-rate 3000"
-    while true; do
-      $command
+5. **Mintleme işleminden sonra balance kontrol:**
 
-        if [ $? -ne 0 ]; then
-           echo "error"
-          exit 1
-        fi
+```
+yarn cli wallet balances
 
-        sleep 1
-    done
-   ```
-    *Bu komutu her çalıştırdığınızda, sürekli olarak 5 adet CAT mintlenir.*
----
-
-
-
-#### Artık CAT tokenları mintlemek için hazırsınız!
+```
+│ tokenId                                                              │ symbol │ balance │
+┼──────────────────────────────────────────────────────────────────────┼────────┼─────────┤
+│ '45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0' │ 'CAT'  │ '5.00'  │
+┴──────────────────────────────────────────────────────────────────────┴────────┴─────────┘
